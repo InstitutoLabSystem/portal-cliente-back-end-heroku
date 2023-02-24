@@ -1,0 +1,139 @@
+const Emails = require('../models/PortalEmails')
+const Groups = require('../models/GroupEmail')
+// const search = require('./controllersSearch')
+const controlersSendEmail = require('./controllerSendEmail')
+// const PortalEmails = require("../models/PortalEmails");
+
+const emails = {
+  async create(req, res) {
+    if (!req.body.email || !req.body.cod_cli) {
+      return res.status(400).json({ msg: 'Campos vazios não são permitidos!' })
+    }
+    try {
+      const email = await Emails.findOne({
+        where: { email: req.body.email, cod_cli: req.body.cod_cli },
+      })
+
+      if (email) {
+        return res.status(400).json({ msg: 'Email já cadastrado' })
+      }
+    } catch (err) {
+      return res.status(500).json({ msg: 'Error mysql' })
+    }
+
+    try {
+      await Emails.create({
+        orcamento: req.body.orcamento,
+        email: req.body.email,
+        cod_cli: req.body.cod_cli,
+      })
+      return res.json({ msg: 'Sucesso, email cadastrado' })
+    } catch (error) {
+      return res.status(400).json({ msg: 'Error, não foi possível cadastrar' })
+    }
+  },
+  async get(req, res) {
+    if (!req.query.cod_cli) {
+      return res
+        .status(400)
+        .json({ msg: 'Error, Não foi recebido o Orcamento' })
+    }
+    try {
+      const emails = await Emails.findAll({
+        // where: { orcamento: req.query.orcamento },
+        where: { cod_cli: req.query.cod_cli },
+      })
+      res.json(emails)
+    } catch (error) {
+      console.log(error)
+      return await res
+        .status(400)
+        .json({ msg: 'Error, não foi possível buscar o cliente' })
+    }
+  },
+  async update(req, res) {
+    if (!req.body.id) {
+      return res.status(400).json({ msg: 'Error, está faltando o id' })
+    }
+    try {
+      const email = await Emails.update(
+        { email: req.body.emailNovo },
+        { where: { id: req.body.id } },
+      )
+      return res.json({ email })
+    } catch (error) {
+      return res.status(400).json({ msg: 'Error, campos vazios' })
+    }
+  },
+  async delete(req, res) {
+    if (!req.query.id) {
+      return res.status(400).json({ msg: 'Error, está faltando o id' })
+    }
+    try {
+      await Emails.destroy({ where: { id: req.query.id } })
+      res.json({ msg: 'Sucesso, email deletado!' })
+    } catch (error) {
+      res.status(400).json({ msg: 'Error, não foi possível detelar' })
+    }
+  },
+
+  async sendEmail(req, res) {
+    if (
+      !req.body.orcamento ||
+      !req.body.nome_empresa ||
+      // !req.body.numprocesso ||
+      !req.body.cod_cli ||
+      !req.body.emailCli ||
+      !req.body.token ||
+      !req.body.senha
+    ) {
+      return res
+        .status(400)
+        .json({ msg: 'Error, Campos vazios não são permitidos!' })
+    }
+    // const email = ''
+    let em1 = ''
+    if (req.body.groupSelect) {
+      const email = await Groups.findAll({
+        where: { id_grupo: req.body.groupSelect },
+      })
+      // em1(email.map((e) => e.email + ','))
+      em1 = email.map((e) => e.email + ',')
+    }
+
+    // let result = ''
+    // try {
+    //   result = await search.bucarProposta(req.body.orcamento)
+    // } catch (e) {
+    //   return res.status(400).json({ msg: 'Error ao buscar o relatório!' })
+    // }
+    // let em = result.emailSol + ',';
+    // const em1 = email.map((e) => e.email + ',')
+    const em2 = req.body.emailCli + ','
+    const em3 = req.body.emails ? req.body.emails + ',' : ''
+    const emailCopia =
+      ' tecnico1@labsystem.com.br,tecnico3@labsystem.com.br,qualidade6@labsystem.com.br,qualidade1@labsystem.com.br,dev@labsystem.com.br,labsystem@labsystem.com.br'
+    const emails = em1 + em2 + em3
+
+    console.log('Emails', emails)
+
+    const isEmail = await controlersSendEmail.enviarEmail(
+      req.body.orcamento,
+      req.body.numprocesso,
+      req.body.token,
+      req.body.senha,
+      emails,
+      req.body.nome_empresa,
+      emailCopia,
+    )
+    if (isEmail) {
+      res.json({ msg: 'Sucesso, Relatório gravado e enviado com sucesso' })
+    } else {
+      res.json({
+        msg: 'Sucesso, Relatório gravado, mas não foi possível enviar o Email',
+      })
+    }
+  },
+}
+
+module.exports = emails

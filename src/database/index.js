@@ -1,0 +1,30 @@
+const Sequelize = require('sequelize')
+const dbConfig = require('../config/database')
+const dbConfigU83TI = require('../config/databaseU83TI')
+
+const Relatorios = require('../models/Relatorio')
+const Proposta = require('../models/Proposta')
+const Clientes = require('../models/Clientes')
+const Emails = require('../models/PortalEmails')
+const Downloads = require('../models/PortalDownload')
+const Setores = require('../models/Setores')
+const PortalRelatorio = require('../models/PortalRelatorio')
+const Users = require('../models/UsersPermission')
+const Group = require('../models/Group')
+const GroupEmail = require('../models/GroupEmail')
+
+const connection = new Sequelize(dbConfig)
+const connectionU83TI = new Sequelize(dbConfigU83TI)
+
+Relatorios.init(connectionU83TI)
+Users.init(connectionU83TI)
+Emails.init(connectionU83TI)
+Downloads.init(connectionU83TI)
+PortalRelatorio.init(connectionU83TI)
+Group.init(connectionU83TI)
+GroupEmail.init(connectionU83TI)
+Proposta.init(connection)
+Clientes.init(connection)
+Setores.init(connection)
+
+module.exports = connection
