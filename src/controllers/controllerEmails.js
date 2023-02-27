@@ -115,8 +115,6 @@ const emails = {
       ' tecnico1@labsystem.com.br,tecnico3@labsystem.com.br,qualidade6@labsystem.com.br,qualidade1@labsystem.com.br,dev@labsystem.com.br,labsystem@labsystem.com.br'
     const emails = em1 + em2 + em3
 
-    console.log('Emails', emails)
-
     const isEmail = await controlersSendEmail.enviarEmail(
       req.body.orcamento,
       req.body.numprocesso,
