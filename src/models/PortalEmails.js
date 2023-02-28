@@ -28,6 +28,11 @@ class PortalEmails extends Model {
           autoIncrement: true,
           primaryKey: false,
         },
+        emailEnviado: {
+          type: DataTypes.INTEGER(11),
+          allowNull: true,
+          autoIncrement: false,
+        },
       },
       {
         sequelize,

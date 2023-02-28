@@ -7,6 +7,9 @@ Router.get('/get', controllerEmails.get)
 Router.put('/put', controllerEmails.update)
 Router.delete('/delete', controllerEmails.delete)
 
+Router.get('/getEmailsEnviados', controllerEmails.getEmailsEnviados)
+Router.put('/putEmailsEnviados', controllerEmails.updateEmailsEnviados)
+
 Router.post('/sendEmail', controllerEmails.sendEmail)
 
 module.exports = Router

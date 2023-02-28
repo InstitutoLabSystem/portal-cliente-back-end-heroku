@@ -77,6 +77,38 @@ const emails = {
     }
   },
 
+  async getEmailsEnviados(req, res) {
+    if (!req.query.orcamento && !req.query.portal_acessos)
+      return res
+        .status(400)
+        .json({ msg: 'Error, Sem orçamento ou portal acessos' })
+
+    try {
+      const emailsEnviados = await Emails.findAll({
+        where: {
+          orcamento: req.query.orcamento,
+          emailEnviado: 1,
+        },
+      })
+      res.status(200).json(emailsEnviados)
+    } catch (error) {
+      console.log(error)
+      res.status(400).json({ msg: 'Error, não foi possivel buscar no banco' })
+    }
+  },
+
+  async updateEmailsEnviados(req, res) {
+    try {
+      const teste = await Emails.update(
+        { emailEnviado: 1 },
+        { where: { orcamento: req.body.orcamento } },
+      )
+      res.status(200).json({ msg: 'Certo', teste })
+    } catch (error) {
+      return res.status(400).json({ msg: 'Error, campos vazios' })
+    }
+  },
+
   async sendEmail(req, res) {
     if (
       !req.body.orcamento ||
