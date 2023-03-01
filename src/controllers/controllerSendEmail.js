@@ -7,6 +7,8 @@ const sendEmail = {
     numprocesso,
     token,
     senha,
+    cliente,
+    solicitante,
     emails,
     nomeEmpresa,
     emailCopia,
@@ -73,7 +75,7 @@ const sendEmail = {
         to: emails,
         // to: 'victorbrunof@icloud.com, mmuramota1@gmail.com',
         cc: emailCopia,
-        subject: `Cliente: ${nomeEmpresa}, Orçamento: ${orcamento}, NP: ${numprocesso}`,
+        subject: `${solicitante} - ${cliente}, Orçamento: ${orcamento}, NP: ${numprocesso}`,
         html: texto,
       })
       return true

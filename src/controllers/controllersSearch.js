@@ -44,6 +44,8 @@ const search = {
           'CodCli',
           'emailSol',
           'emailCli',
+          'Cliente',
+          'Solicitante',
         ],
       })
       res.json(orcamentos)

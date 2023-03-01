@@ -117,7 +117,9 @@ const emails = {
       !req.body.cod_cli ||
       !req.body.emailCli ||
       !req.body.token ||
-      !req.body.senha
+      !req.body.senha ||
+      !req.body.solicitante ||
+      !req.body.cliente
     ) {
       return res
         .status(400)
@@ -153,6 +155,8 @@ const emails = {
       req.body.numprocesso,
       req.body.token,
       req.body.senha,
+      req.body.cliente,
+      req.body.solicitante,
       emails,
       req.body.nome_empresa,
       emailCopia,
