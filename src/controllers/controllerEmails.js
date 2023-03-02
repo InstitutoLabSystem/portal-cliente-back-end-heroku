@@ -113,7 +113,6 @@ const emails = {
     if (
       !req.body.orcamento ||
       !req.body.nome_empresa ||
-      // !req.body.numprocesso ||
       !req.body.cod_cli ||
       !req.body.emailCli ||
       !req.body.token ||
@@ -125,29 +124,22 @@ const emails = {
         .status(400)
         .json({ msg: 'Error, Campos vazios não são permitidos!' })
     }
-    // const email = ''
     let em1 = ''
     if (req.body.groupSelect) {
       const email = await Groups.findAll({
         where: { id_grupo: req.body.groupSelect },
       })
-      // em1(email.map((e) => e.email + ','))
-      em1 = email.map((e) => e.email + ',')
+      em1 = email.map((e) => e.email)
     }
+    const emailsSalvos = await Emails.findAll({
+      where: { cod_cli: req.body.cod_cli },
+    })
 
-    // let result = ''
-    // try {
-    //   result = await search.bucarProposta(req.body.orcamento)
-    // } catch (e) {
-    //   return res.status(400).json({ msg: 'Error ao buscar o relatório!' })
-    // }
-    // let em = result.emailSol + ',';
-    // const em1 = email.map((e) => e.email + ',')
-    const em2 = req.body.emailCli + ','
-    const em3 = req.body.emails ? req.body.emails + ',' : ''
+    const em2 = req.body.emailCli
+    const em3 = emailsSalvos.map((e) => e.email)
     const emailCopia =
-      ' tecnico1@labsystem.com.br,tecnico3@labsystem.com.br,qualidade6@labsystem.com.br,qualidade1@labsystem.com.br,dev@labsystem.com.br,labsystem@labsystem.com.br'
-    const emails = em1 + em2 + em3
+      'tecnico1@labsystem.com.br,tecnico3@labsystem.com.br,qualidade6@labsystem.com.br,qualidade1@labsystem.com.br,dev@labsystem.com.br,labsystem@labsystem.com.br'
+    const emails = em1 + ',' + em2.toString() + ',' + em3.toString()
 
     try {
       await controlersSendEmail.enviarEmail(
