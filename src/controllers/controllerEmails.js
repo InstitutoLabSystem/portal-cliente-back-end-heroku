@@ -141,33 +141,25 @@ const emails = {
       'tecnico1@labsystem.com.br,tecnico3@labsystem.com.br,qualidade6@labsystem.com.br,qualidade1@labsystem.com.br,dev@labsystem.com.br,labsystem@labsystem.com.br'
     const emails = em1 + ',' + em2.toString() + ',' + em3.toString()
 
-    try {
-      await controlersSendEmail.enviarEmail(
-        req.body.orcamento,
-        req.body.numprocesso,
-        req.body.token,
-        req.body.senha,
-        req.body.cliente,
-        req.body.solicitante,
-        emails,
-        req.body.nome_empresa,
-        emailCopia,
-      )
+    const isEmail = await controlersSendEmail.enviarEmail(
+      req.body.orcamento,
+      req.body.numprocesso,
+      req.body.token,
+      req.body.senha,
+      req.body.cliente,
+      req.body.solicitante,
+      emails,
+      req.body.nome_empresa,
+      emailCopia,
+    )
+
+    if (isEmail) {
       res.json({ msg: 'Sucesso, Relatório gravado e enviado com sucesso' })
-    } catch (error) {
-      console.log(error)
+    } else {
       res.json({
-        msg: 'Erro ao enviar Email',
+        msg: 'Erro, Email não foi enviado',
       })
     }
-
-    // if (isEmail) {
-    //   res.json({ msg: 'Sucesso, Relatório gravado e enviado com sucesso' })
-    // } else {
-    //   res.json({
-    //     msg: 'Sucesso, Relatório gravado, mas não foi possível enviar o Email',
-    //   })
-    // }
   },
 }
 
