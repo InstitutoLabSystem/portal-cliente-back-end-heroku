@@ -135,11 +135,11 @@ const emails = {
       where: { cod_cli: req.body.cod_cli },
     })
 
-    const em2 = req.body.emailCli
     const em3 = emailsSalvos.map((e) => e.email)
     const emailCopia =
       'tecnico1@labsystem.com.br,tecnico3@labsystem.com.br,qualidade6@labsystem.com.br,qualidade1@labsystem.com.br,dev@labsystem.com.br,labsystem@labsystem.com.br'
-    const emails = em1 + ',' + em2.toString() + ',' + em3.toString()
+    const emails =
+      em1.toString() + ',' + req.body.emailCli + ',' + em3.toString()
 
     const isEmail = await controlersSendEmail.enviarEmail(
       req.body.orcamento,
