@@ -1,4 +1,14 @@
 {
     // "extends": "@rocketseat/eslint-config/react"
-    "extends": "@rocketseat/eslint-config/node"
+    "extends": "@rocketseat/eslint-config/node",
+    "rules": {
+        "no-unused-vars": "on",
+        "prettier/prettier": [
+            "error",
+            {
+                "singleQuote": true,
+                "endOfLine": "auto"
+            }
+        ]
+    }
 }

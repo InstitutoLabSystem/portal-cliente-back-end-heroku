@@ -14,6 +14,7 @@ const routerDownloads = require('./src/routes/routerDownloads')
 const routerSetores = require('./src/routes/routerSetores')
 const routerUsers = require('./src/routes/routerUsers')
 const routerGroup = require('./src/routes/routerGroup')
+const routerEmailCopia = require('./src/routes/routerEmailCopia')
 const app = express()
 
 app.use('/report', cors(config.cors), express.json(), routerReport)
@@ -24,6 +25,7 @@ app.use('/setores', cors(config.cors), express.json(), routerSetores)
 app.use('/downloads', cors(config.cors), express.json(), routerDownloads)
 app.use('/users', cors(config.cors), express.json(), routerUsers)
 app.use('/group', cors(config.cors), express.json(), routerGroup)
+app.use('/emailCopia', cors(config.cors), express.json(), routerEmailCopia)
 
 app.get('/', function (req, res) {
   testeConnection
