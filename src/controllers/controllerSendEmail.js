@@ -1,5 +1,5 @@
-const nodemailer = require('nodemailer')
-require('dotenv').config()
+const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const sendEmail = {
   async enviarEmail(
@@ -11,10 +11,10 @@ const sendEmail = {
     solicitante,
     emails,
     nomeEmpresa,
-    emailCopia,
+    emailCopia
   ) {
     if (!orcamento || !token || !senha || !nomeEmpresa || !emailCopia) {
-      return false
+      return false;
     }
 
     const table = `
@@ -45,7 +45,7 @@ const sendEmail = {
             <td>tecnico1@labsystem.com.br</td>
             </tr>
         </table>
-    `
+    `;
 
     const texto = `<p style="font-family: sans-serif">Prezado Cliente,<br><br>Seu relatório referênte ao Orçamento: ${orcamento}, está  disponível para download.<br><br>
         E para melhor atendê-los, a Lab System está implementando em nosso site uma área exclusiva para os nossos clientes, onde todos os relatórios finalizados ficaram disponíveis para baixar por um período de 6 meses.<br>
@@ -56,7 +56,7 @@ const sendEmail = {
         Atenciosamente <br> Laboratório Lab System.<br><br>
         Esse é um e-mail automático, favor não responder! <br> Em caso de dúvidas entre em contato com:<br><br>${table}
         </p>
-        `
+        `;
 
     const transporter = nodemailer.createTransport({
       host: 'mail.institutolabsystem.com.br',
@@ -68,7 +68,7 @@ const sendEmail = {
         user: 'relatorios@institutolabsystem.com.br',
         pass: 'PaRHOOibupWm',
       },
-    })
+    });
 
     try {
       await transporter.sendMail({
@@ -79,14 +79,13 @@ const sendEmail = {
         cc: emailCopia,
         subject: `${solicitante} - ${cliente}, Orçamento: ${orcamento}, NP: ${numprocesso}`,
         html: texto,
-      })
-      //Teste
-      return true
+      });
+      return true;
     } catch (error) {
-      console.log('Erro Aqui no envio do email transporter: ', error)
-      return false
+      console.log('Erro Aqui no envio do email transporter: ', error);
+      return false;
     }
   },
-}
+};
 
-module.exports = sendEmail
+module.exports = sendEmail;

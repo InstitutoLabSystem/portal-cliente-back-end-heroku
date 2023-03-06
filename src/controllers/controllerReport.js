@@ -27,6 +27,7 @@ const relatorios = {
     const segundo = dataHora[1].split(':')[2]
     const horario = hora + ':' + minutos + ':' + segundo
     const date = data + horario
+    console.log(date);
 
     // let result = ''
     // try {
@@ -49,7 +50,7 @@ const relatorios = {
         senha: req.body.senha,
         descricao_os: req.body.descricao_os,
         laboratorio: req.body.laboratorio,
-        data_criacao: date,
+        data_criacao: req.body.dateAtual,
         data_vencimento: req.body.upload_vencimento,
         responsavel: req.body.responsavel,
         ativo: 1,
