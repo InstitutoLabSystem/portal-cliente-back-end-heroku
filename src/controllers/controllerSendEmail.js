@@ -80,6 +80,7 @@ const sendEmail = {
         subject: `${solicitante} - ${cliente}, Orçamento: ${orcamento}, NP: ${numprocesso}`,
         html: texto,
       })
+      //Teste
       return true
     } catch (error) {
       console.log('Erro Aqui no envio do email transporter: ', error)
