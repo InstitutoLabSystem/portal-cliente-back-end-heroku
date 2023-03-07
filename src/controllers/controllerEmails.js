@@ -153,13 +153,13 @@ const emails = {
       req.body.solicitante,
       emails,
       req.body.nome_empresa,
-      emailCopia
+      emailCopia.map((e) => e.email).toString()
     );
 
     if (isEmail) {
-      res.json({ msg: 'Sucesso, Relatório gravado e enviado com sucesso' });
+      res.status(200).json({ msg: 'Sucesso, Relatório gravado e enviado com sucesso' });
     } else {
-      res.json({
+      res.status(400).json({
         msg: 'Erro, Email não foi enviado',
       });
     }
