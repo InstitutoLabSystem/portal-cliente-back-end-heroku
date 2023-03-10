@@ -12,4 +12,7 @@ Router.put('/putEmailsEnviados', controllerEmails.updateEmailsEnviados)
 
 Router.post('/sendEmail', controllerEmails.sendEmail)
 
+Router.post('/emailsEnviados', controllerEmails.createEmailsEnviados)
+Router.get('/emailsEnviados', controllerEmails.getEmailsEnviados)
+
 module.exports = Router

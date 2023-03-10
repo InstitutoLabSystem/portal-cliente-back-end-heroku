@@ -51,8 +51,8 @@ const sendEmail = {
         E para melhor atendê-los, a Lab System está implementando em nosso site uma área exclusiva para os nossos clientes, onde todos os relatórios finalizados ficaram disponíveis para baixar por um período de 6 meses.<br>
         Para acessar entre no link abaixo com as seguintes informações:<br><br>
         <strong>Site: </strong>https://labsystem-nuvem.com.br/portal-cliente<br>
-        <strong>Token:</strong> ${token}<br>
-        <strong>senha: </strong>  ${senha}<br><br>
+        <strong>Orçamento:</strong> ${orcamento}<br>
+        <strong>Senha: </strong>  ${senha}<br><br>
         Atenciosamente <br> Laboratório Lab System.<br><br>
         Esse é um e-mail automático, favor não responder! <br> Em caso de dúvidas entre em contato com:<br><br>${table}
         </p>

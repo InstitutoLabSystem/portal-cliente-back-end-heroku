@@ -1,5 +1,8 @@
 const Relatorios = require('../models/Relatorio')
 const portalrelatorio = require('./controllerPortalRelatorio')
+const EmailsEnviados = require('../models/PortalEmailsEnviados');
+const dataAtual = require('../controllers/date')
+// const emails = require('./controllerEmails')
 // const search = require('./controllersSearch')
 
 const relatorios = {
@@ -29,20 +32,6 @@ const relatorios = {
     const date = data + horario
     console.log(date);
 
-    // let result = ''
-    // try {
-    //   result = await search.bucarProposta(req.body.orcamento)
-    // } catch (e) {
-    //   return res.status(400).json({ msg: 'Error ao buscar o relatório!' })
-    // }
-    // if (!result) {
-    //   return res.status(400).json({ msg: 'Erro orçamento não existe!' })
-    // }
-    // if (!result.token || !result.senha) {
-    //   return res
-    //     .status(400)
-    //     .json({ msg: 'Esse orcamento não tem token e senha!' })
-    // }
     try {
       const relatorio = await Relatorios.create({
         orcamento: req.body.orcamento,
@@ -50,10 +39,10 @@ const relatorios = {
         senha: req.body.senha,
         descricao_os: req.body.descricao_os,
         laboratorio: req.body.laboratorio,
-        data_criacao: req.body.dateAtual,
+        data_criacao: date,
         data_vencimento: req.body.upload_vencimento,
         responsavel: req.body.responsavel,
-        ativo: 1,
+        status: 0,
         link_relatorio:
           'https://labsystem.s3.us-east-1.amazonaws.com/' + req.file.key,
       })
@@ -65,7 +54,7 @@ const relatorios = {
       )
 
       if (sucesso) {
-        return res.status(201).json({ msg: 'Sucesso, Relatório gravado' })
+        return res.status(201).json({ msg: 'Sucesso, Relatório gravado', relatorio })
       } else {
         return res
           .status(400)
@@ -136,22 +125,29 @@ const relatorios = {
         },
       })
       if (relatorio) {
-        relatorio = await Relatorios.update(
+        await Relatorios.update({ status: 1 },
           {
-            status: 1,
-          },
-          {
-            where: {
-              orcamento: req.body.orcamento,
-            },
+            where: { orcamento: req.body.orcamento },
           },
         )
-        return res.json({ msg: 'Sucesso, Status atualizado' })
+        relatorio = {
+          orcamento: req.body.orcamento,
+          status: 1
+        }
+        const data = new Date()
+        await EmailsEnviados.create({
+          id_grupo: req.body.groupSelect,
+          orcamento: req.body.orcamento,
+          emailCli: req.body.emailCli,
+          emailSol: req.body.emailSol,
+          data_envio: data,
+        });
+        return res.json({ msg: 'Email Enviado com sucesso' });
       }
     } catch (error) {
       return res
         .status(400)
-        .json({ msg: 'Error, não foi possível atualizar o status' })
+        .json({ msg: 'Error, não foi possivel enviar o email' })
     }
   },
 }

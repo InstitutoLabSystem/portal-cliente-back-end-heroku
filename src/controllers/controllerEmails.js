@@ -1,8 +1,11 @@
 const Emails = require('../models/PortalEmails');
 const Groups = require('../models/GroupEmail');
 const EmailsCopia = require('../models/EmailsCopia');
+const EmailsEnviados = require('../models/PortalEmailsEnviados');
+const dataAtual = require('../controllers/date')
 // const search = require('./controllersSearch')
 const controlersSendEmail = require('./controllerSendEmail');
+const controllerReport = require('./controllerReport');
 // const PortalEmails = require("../models/PortalEmails");
 
 const emails = {
@@ -23,12 +26,12 @@ const emails = {
     }
 
     try {
-      await Emails.create({
+      const email = await Emails.create({
         orcamento: req.body.orcamento,
         email: req.body.email,
         cod_cli: req.body.cod_cli,
       });
-      return res.json({ msg: 'Sucesso, email cadastrado' });
+      return res.json({ msg: 'Sucesso, email cadastrado', email });
     } catch (error) {
       return res.status(400).json({ msg: 'Error, não foi possível cadastrar' });
     }
@@ -57,13 +60,13 @@ const emails = {
       return res.status(400).json({ msg: 'Error, está faltando o id' });
     }
     try {
-      const email = await Emails.update(
+      await Emails.update(
         { email: req.body.emailNovo },
         { where: { id: req.body.id } }
       );
-      return res.json({ email });
+      return res.json({ msg: 'Email Atualizado com sucesso' });
     } catch (error) {
-      return res.status(400).json({ msg: 'Error, campos vazios' });
+      return res.status(400).json({ msg: 'Erro com ' });
     }
   },
   async delete(req, res) {
@@ -107,6 +110,42 @@ const emails = {
       res.status(200).json({ msg: 'Certo', teste });
     } catch (error) {
       return res.status(400).json({ msg: 'Error, campos vazios' });
+    }
+  },
+
+  async createEmailsEnviados(req, res) {
+    const data = new Date()
+    try {
+      await EmailsEnviados.create({
+        id_grupo: req.body.groupSelect,
+        orcamento: req.body.orcamento,
+        emailCli: req.body.emailCli,
+        emailSol: req.body.emailSol,
+        data_envio: data,
+      });
+      return res.json({ msg: 'Email Enviado com sucesso' });
+    } catch (error) {
+      console.log(error)
+      return res.status(400).json({ msg: 'Error, não foi possivel enviar o email' });
+    }
+  },
+
+  async getEmailsEnviados(req, res) {
+    if (!req.query.orcamento)
+      return res
+        .status(400)
+        .json({ msg: 'Error, Sem orçamento' });
+
+    try {
+      const emailsEnviados = await EmailsEnviados.findAll({
+        where: {
+          orcamento: req.query.orcamento
+        },
+      });
+      res.status(200).json(emailsEnviados);
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({ msg: 'Error, não foi possivel buscar no banco' });
     }
   },
 
@@ -157,7 +196,8 @@ const emails = {
     );
 
     if (isEmail) {
-      res.status(200).json({ msg: 'Sucesso, Relatório gravado e enviado com sucesso' });
+      // res.status(200).json({ msg: 'Sucesso, Relatório gravado e enviado com sucesso' });
+      controllerReport.putStatus(req, res);
     } else {
       res.status(400).json({
         msg: 'Erro, Email não foi enviado',
