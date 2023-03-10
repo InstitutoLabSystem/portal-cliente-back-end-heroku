@@ -69,7 +69,7 @@ const relatorios = {
   async get(req, res) {
     try {
       const relatorio = await Relatorios.findAll({
-        where: { token: req.query.token, senha: req.query.senha },
+        where: { orcamento: req.query.orcamento, senha: req.query.senha },
       })
       return res.json(relatorio)
     } catch (error) {
