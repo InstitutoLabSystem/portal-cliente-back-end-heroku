@@ -44,12 +44,13 @@ const downloads = {
     // const segundo = dataHora[1].split(':')[2]
     // const horario = hora + ':' + minutos + ':' + segundo
     // const date = data + horario
+    const data = new Date()
     try {
       await Downloads.create({
         id_portal_acessos: req.body.id,
         orcamento: req.body.orcamento,
         download_nome: req.body.nome,
-        download_data: req.body.dataDownload,
+        download_data: data,
         download_ip: req.body.downloadIp,
         download_localizacao: req.body.localizacao,
       })
