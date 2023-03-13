@@ -67,16 +67,30 @@ const relatorios = {
     }
   },
   async get(req, res) {
-    try {
-      const relatorio = await Relatorios.findAll({
-        where: { orcamento: req.query.orcamento, senha: req.query.senha },
-      })
-      return res.json(relatorio)
-    } catch (error) {
-      console.log(error)
-      res
-        .status(400)
-        .json({ msg: 'Não foi possível fazer a busca os relatórios!' })
+    if (req.query.controller === 'orcamento') {
+      try {
+        const relatorio = await Relatorios.findAll({
+          where: { orcamento: req.query.username, senha: req.query.senha },
+        })
+        return res.json(relatorio)
+      } catch (error) {
+        console.log(error)
+        res
+          .status(400)
+          .json({ msg: 'Não foi possível fazer a busca os relatórios!' })
+      }
+    } else {
+      try {
+        const relatorio = await Relatorios.findAll({
+          where: { token: req.query.username, senha: req.query.senha },
+        })
+        return res.json(relatorio)
+      } catch (error) {
+        console.log(error)
+        res
+          .status(400)
+          .json({ msg: 'Não foi possível fazer a busca os relatórios!' })
+      }
     }
   },
   async getall(req, res) {
