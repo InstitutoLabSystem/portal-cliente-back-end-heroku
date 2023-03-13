@@ -67,10 +67,10 @@ const relatorios = {
     }
   },
   async get(req, res) {
-    if (req.query.controller === 'orcamento') {
+    if (isNaN(req.query.username)) {
       try {
         const relatorio = await Relatorios.findAll({
-          where: { orcamento: req.query.username, senha: req.query.senha },
+          where: { token: req.query.username, senha: req.query.senha },
         })
         return res.json(relatorio)
       } catch (error) {
@@ -82,7 +82,7 @@ const relatorios = {
     } else {
       try {
         const relatorio = await Relatorios.findAll({
-          where: { token: req.query.username, senha: req.query.senha },
+          where: { orcamento: req.query.username, senha: req.query.senha },
         })
         return res.json(relatorio)
       } catch (error) {
