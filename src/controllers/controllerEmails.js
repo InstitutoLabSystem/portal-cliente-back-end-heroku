@@ -2,7 +2,7 @@ const Emails = require('../models/PortalEmails');
 const Groups = require('../models/GroupEmail');
 const EmailsCopia = require('../models/EmailsCopia');
 const EmailsEnviados = require('../models/PortalEmailsEnviados');
-const dataAtual = require('../controllers/date')
+const dataAtual = require('../controllers/date');
 // const search = require('./controllersSearch')
 const controlersSendEmail = require('./controllerSendEmail');
 const controllerReport = require('./controllerReport');
@@ -83,9 +83,7 @@ const emails = {
 
   async getEmailsEnviados(req, res) {
     if (!req.query.orcamento)
-      return res
-        .status(400)
-        .json({ msg: 'Error, Sem orçamento' });
+      return res.status(400).json({ msg: 'Error, Sem orçamento' });
 
     try {
       const emailsEnviados = await Emails.findAll({
@@ -114,7 +112,7 @@ const emails = {
   },
 
   async createEmailsEnviados(req, res) {
-    const data = new Date()
+    const data = new Date();
     try {
       await EmailsEnviados.create({
         id_grupo: req.body.groupSelect,
@@ -125,21 +123,21 @@ const emails = {
       });
       return res.json({ msg: 'Email Enviado com sucesso' });
     } catch (error) {
-      console.log(error)
-      return res.status(400).json({ msg: 'Error, não foi possivel enviar o email' });
+      console.log(error);
+      return res
+        .status(400)
+        .json({ msg: 'Error, não foi possivel enviar o email' });
     }
   },
 
   async getEmailsEnviados(req, res) {
     if (!req.query.orcamento)
-      return res
-        .status(400)
-        .json({ msg: 'Error, Sem orçamento' });
+      return res.status(400).json({ msg: 'Error, Sem orçamento' });
 
     try {
       const emailsEnviados = await EmailsEnviados.findAll({
         where: {
-          orcamento: req.query.orcamento
+          orcamento: req.query.orcamento,
         },
       });
       res.status(200).json(emailsEnviados);
@@ -154,7 +152,7 @@ const emails = {
       !req.body.orcamento ||
       !req.body.nome_empresa ||
       !req.body.cod_cli ||
-      !req.body.emailCli ||
+      // !req.body.emailCli ||
       !req.body.token ||
       !req.body.senha ||
       !req.body.solicitante ||
@@ -177,8 +175,7 @@ const emails = {
 
     const em = email ? email.map((e) => e.email).toString() : '';
     const emails =
-      req.body.emailCli +
-      ',' +
+      req.body.emailCliSol +
       emailsSalvos.map((e) => e.email).toString() +
       ',' +
       em;
