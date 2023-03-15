@@ -155,8 +155,7 @@ const relatorios = {
         await EmailsEnviados.create({
           id_grupo: req.body.groupSelect,
           orcamento: req.body.orcamento,
-          emailCli: req.body.emailCli,
-          emailSol: req.body.emailSol,
+          emailCli: req.body.emailCliSol,
           data_envio: data,
         });
         return res.json({ msg: 'Email Enviado com sucesso' });
