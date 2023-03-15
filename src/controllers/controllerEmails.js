@@ -174,11 +174,10 @@ const emails = {
     const emailCopia = await EmailsCopia.findAll();
 
     const em = email ? email.map((e) => e.email).toString() : '';
-    const emails =
-      req.body.emailCliSol +
-      emailsSalvos.map((e) => e.email).toString() +
-      ',' +
-      em;
+
+    const emails = `${req.body.emailCli ? req.body.emailCli + ',' : ''}${
+      req.body.emailSol ? req.body.emailSol + ',' : ''
+    }${emailsSalvos.map((e) => e.email).toString() + ',' + em}`;
 
     const isEmail = await controlersSendEmail.enviarEmail(
       req.body.orcamento,
