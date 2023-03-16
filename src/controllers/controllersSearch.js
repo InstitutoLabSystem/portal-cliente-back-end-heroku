@@ -50,6 +50,7 @@ const search = {
       })
       res.json(orcamentos)
     } catch (err) {
+      console.log('Erro na busca do orcamento', err)
       res.json({ msg: 'Erro, Não foi possível fazer a busca!' })
     }
   },
