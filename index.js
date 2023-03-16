@@ -3,6 +3,10 @@ const testeConnection = require('./src/database/index')
 
 const port = process.env.PORT || 8000
 
+const os = require('os');
+
+const networkInfo = os.networkInterfaces();
+
 const express = require('express')
 const cors = require('cors')
 const config = require('./src/config/config')
@@ -28,28 +32,20 @@ app.use('/group', cors(config.cors), express.json(), routerGroup)
 app.use('/emailCopia', cors(config.cors), express.json(), routerEmailCopia)
 
 app.get('/', function (req, res) {
-  try {
-    testeConnection.authenticate().
-    then(() => {
+  testeConnection
+    .authenticate()
+    .then(() => {
       console.log('Conectado com sucesso')
       res.send('Conectado com sucesso')
-    }) 
-  } catch (err) {
-    console.log('Erro ao conectar: ' + err)
-    res.send('Erro ao conectar: ' + err)
-  }
-  // testeConnection
-  //   .authenticate()
-  //   .then(() => {
-  //     console.log('Conectado com sucesso')
-  //     res.send('Conectado com sucesso')
-  //   })
-  //   .catch((err) => {
-  //     console.log('Erro ao conectar: ' + err)
-  //     res.send('Erro ao conectar: ' + err)
-  //   })
+    })
+    .catch((err) => {
+      console.log('Erro ao conectar: ' + err)
+      res.send('Erro ao conectar: ' + err)
+    })
 })
 
 app.listen(port, () => {
+  console.log('Objeto: ', networkInfo)
+  // console.log('IP: ', networkInfo.log[0].address)
   console.log(`Example app listening at http://localhost:${port}`)
 })
