@@ -28,16 +28,26 @@ app.use('/group', cors(config.cors), express.json(), routerGroup)
 app.use('/emailCopia', cors(config.cors), express.json(), routerEmailCopia)
 
 app.get('/', function (req, res) {
-  testeConnection
-    .authenticate()
-    .then(() => {
+  try {
+    testeConnection.authenticate().
+    then(() => {
       console.log('Conectado com sucesso')
       res.send('Conectado com sucesso')
-    })
-    .catch((err) => {
-      console.log('Erro ao conectar: ' + err)
-      res.send('Erro ao conectar: ' + err)
-    })
+    }) 
+  } catch (err) {
+    console.log('Erro ao conectar: ' + err)
+    res.send('Erro ao conectar: ' + err)
+  }
+  // testeConnection
+  //   .authenticate()
+  //   .then(() => {
+  //     console.log('Conectado com sucesso')
+  //     res.send('Conectado com sucesso')
+  //   })
+  //   .catch((err) => {
+  //     console.log('Erro ao conectar: ' + err)
+  //     res.send('Erro ao conectar: ' + err)
+  //   })
 })
 
 app.listen(port, () => {
