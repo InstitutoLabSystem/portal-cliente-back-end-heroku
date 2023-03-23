@@ -10,6 +10,7 @@ Router.post(
 )
 Router.get('/get', controllerReport.get)
 Router.get('/getAll', controllerReport.getall)
+Router.get('/getLogin', controllerReport.getLogin)
 Router.delete('/delete', controllerReport.delete)
 
 Router.put('/updateStatus', controllerReport.putStatus)

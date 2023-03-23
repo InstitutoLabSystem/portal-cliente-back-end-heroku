@@ -1,4 +1,5 @@
 const Relatorios = require('../models/Relatorio');
+const Login = require('../models/Login')
 const portalrelatorio = require('./controllerPortalRelatorio');
 const EmailsEnviados = require('../models/PortalEmailsEnviados');
 const dataAtual = require('../controllers/date');
@@ -36,7 +37,7 @@ const relatorios = {
       const relatorio = await Relatorios.create({
         orcamento: req.body.orcamento,
         token: req.body.token,
-        senha: req.body.senha,
+        senha: req.body.senha.toUpperCase(),
         descricao_os: req.body.descricao_os,
         laboratorio: req.body.laboratorio,
         data_criacao: date,
@@ -46,6 +47,23 @@ const relatorios = {
         link_relatorio:
           'https://labsystem.s3.us-east-1.amazonaws.com/' + req.file.key,
       });
+
+      var login;
+      try {
+        login = await Login.findAll({
+          where: { orcamento: req.body.orcamento, senha: req.body.senha },
+        });
+      } catch (error) {
+        console.log(error)
+      }
+      
+      if (login.length === 0) {
+        await Login.create({
+          token: req.body.token,
+          orcamento: req.body.orcamento,
+          senha: req.body.senha.toUpperCase(),
+        });
+      }
 
       const sucesso = await portalrelatorio.upload(
         req.body.orcamento,
@@ -106,6 +124,33 @@ const relatorios = {
       res
         .status(400)
         .json({ msg: 'Não foi possível fazer a busca os relatórios!' });
+    }
+  },
+  async getLogin(req, res) {
+    if (isNaN(req.query.username)) {
+      try {
+        const relatorio = await Login.findAll({
+          where: { token: req.query.username, senha: req.query.senha },
+        });
+        return res.json(relatorio);
+      } catch (error) {
+        console.log(error);
+        res
+          .status(400)
+          .json({ msg: 'Token/Orçamento ou senha Inválido' });
+      }
+    } else {
+      try {
+        const relatorio = await Login.findAll({
+          where: { orcamento: req.query.username, senha: req.query.senha },
+        });
+        return res.json(relatorio);
+      } catch (error) {
+        console.log(error);
+        res
+          .status(400)
+          .json({ msg: 'Token/Orçamento ou senha Inválido' });
+      }
     }
   },
   async delete(req, res) {
