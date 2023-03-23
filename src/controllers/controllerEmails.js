@@ -181,6 +181,7 @@ const emails = {
 
     const isEmail = await controlersSendEmail.enviarEmail(
       req.body.orcamento,
+      req.body.assunto,
       req.body.numprocesso,
       req.body.token,
       req.body.senha,

@@ -4,6 +4,7 @@ require('dotenv').config();
 const sendEmail = {
   async enviarEmail(
     orcamento,
+    assunto,
     numprocesso,
     token,
     senha,
@@ -77,7 +78,7 @@ const sendEmail = {
         to: emails,
         // to: 'victorbrunof@icloud.com, mmuramota1@gmail.com',
         cc: emailCopia,
-        subject: `${solicitante} - ${cliente}, Orçamento: ${orcamento}, NP: ${numprocesso}`,
+        subject: `${assunto}`,
         html: texto,
       });
       return true;
