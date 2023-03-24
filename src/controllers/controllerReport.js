@@ -171,6 +171,21 @@ const relatorios = {
       res.json({ msg: 'Nenhum id foi passado' });
     }
   },
+  async updateStatus(req, res) {
+    if (!req.body.id)
+      return res.status(400).json({ msg: 'Error, Campos vazios não são permitidos!' });
+    try {
+      await Relatorios.update({
+        status: 1,
+      }, {
+        where: {id: req.body.id}
+      })
+      return res.status(200).json({ msg: 'Sucesso, Status atualizado' });
+    } catch (error) {
+      console.log(error)
+      return res.status(400).json({ msg: 'Error, Não foi possível atualizar o status' });
+    }
+  },
 
   async putStatus(req, res) {
     if (!req.body.orcamento) {
