@@ -62,6 +62,7 @@ const relatorios = {
           token: req.body.token,
           orcamento: req.body.orcamento,
           senha: req.body.senha.toUpperCase(),
+          created_at: new Date(),
         });
       }
 
@@ -193,6 +194,25 @@ const relatorios = {
         .status(400)
         .json({ msg: 'Error, Campos vazios não são permitidos!' });
     }
+
+    var login;
+    try {
+      login = await Login.findAll({
+        where: { orcamento: req.body.orcamento, senha: req.body.senha },
+      });
+    } catch (error) {
+      console.log(error)
+    }
+    
+    if (login.length === 0) {
+      await Login.create({
+        token: req.body.token,
+        orcamento: req.body.orcamento,
+        senha: req.body.senha.toUpperCase(),
+        created_at: new Date(),
+      });
+    }
+    
     let relatorio = '';
     try {
       relatorio = await Relatorios.findAll({

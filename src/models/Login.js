@@ -28,6 +28,12 @@ class Login extends Model {
           autoIncrement: false,
           primaryKey: false,
         },
+        created_at: {
+          type: DataTypes.DATE,
+          allowNull: false,
+          autoIncrement: false,
+          primaryKey: false,
+        }
       },
       {
         sequelize,
