@@ -63,7 +63,8 @@ const sendEmail = {
       host: 'mail.institutolabsystem.com.br',
       port: '465',
       secure: true,
-      requireTLS: true,
+      requireTLS: false,
+      debug: true,
       // auth: { user: "relatorioslabsystem@chat.labsystem-nuvem.com.br", pass: "Relatorio@2022" }
       auth: {
         user: 'relatorios@institutolabsystem.com.br',
