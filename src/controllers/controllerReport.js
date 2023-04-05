@@ -197,14 +197,16 @@ const relatorios = {
 
     var login;
     try {
-      login = await Login.findAll({
+      login = await Login.findOne({
         where: { orcamento: req.body.orcamento, senha: req.body.senha },
       });
     } catch (error) {
       console.log(error)
     }
+    console.log(login)
     
-    if (login.length === 0) {
+    if (!login) {
+      console.log('entrou')
       await Login.create({
         token: req.body.token,
         orcamento: req.body.orcamento,
@@ -215,11 +217,12 @@ const relatorios = {
     
     let relatorio = '';
     try {
-      relatorio = await Relatorios.findAll({
+      relatorio = await Relatorios.findOne({
         where: {
           orcamento: req.body.orcamento,
         },
       });
+      console.log('relatorio', relatorio)
       if (relatorio) {
         await Relatorios.update(
           { status: 1 },
@@ -227,17 +230,16 @@ const relatorios = {
             where: { orcamento: req.body.orcamento },
           }
         );
-        relatorio = {
-          orcamento: req.body.orcamento,
-          status: 1,
-        };
-        const data = new Date();
+        // relatorio = {
+        //   orcamento: req.body.orcamento,
+        //   status: 1,
+        // };
         await EmailsEnviados.create({
           id_grupo: req.body.groupSelect,
           orcamento: req.body.orcamento,
           emailCli: req.body.emailCli ? req.body.emailCli : null,
           emailSol: req.body.emailSol ? req.body.emailSol : null,
-          data_envio: data,
+          data_envio: new Date(),
         });
         return res.json({ msg: 'Email Enviado com sucesso' });
       }
