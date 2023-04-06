@@ -172,6 +172,42 @@ const relatorios = {
       res.json({ msg: 'Nenhum id foi passado' });
     }
   },
+  async createAcesso(req, res) {
+    if (!req.body.orcamento || !req.body.senha) {
+      return res
+        .status(400)
+        .json({ msg: 'Error, Campos vazios não são permitidos!' });
+    }
+
+    var login;
+    try {
+      login = await Login.findOne({
+        where: { orcamento: req.body.orcamento, senha: req.body.senha },
+      });
+    } catch (error) {
+      res.status(400).json({ msg: 'Error, Não foi possível criar o acesso' });
+      console.log(error)
+    }
+    
+    if (login) {
+      return res
+        .status(400)
+        .json({ msg: 'Error, Orçamento já possui acesso' });
+    }
+
+    try {
+      await Login.create({
+        token: req.body.token,
+        orcamento: req.body.orcamento,
+        senha: req.body.senha.toUpperCase(),
+        created_at: new Date(),
+      });
+      return res.status(200).json({ msg: 'Sucesso, Acesso criado' });
+    } catch (error) {
+      console.log(error)
+      return res.status(400).json({ msg: 'Error, Não foi possível criar o acesso' });
+    }
+  },
   async updateStatus(req, res) {
     if (!req.body.id)
       return res.status(400).json({ msg: 'Error, Campos vazios não são permitidos!' });
@@ -193,26 +229,6 @@ const relatorios = {
       return res
         .status(400)
         .json({ msg: 'Error, Campos vazios não são permitidos!' });
-    }
-
-    var login;
-    try {
-      login = await Login.findOne({
-        where: { orcamento: req.body.orcamento, senha: req.body.senha },
-      });
-    } catch (error) {
-      console.log(error)
-    }
-    console.log(login)
-    
-    if (!login) {
-      console.log('entrou')
-      await Login.create({
-        token: req.body.token,
-        orcamento: req.body.orcamento,
-        senha: req.body.senha.toUpperCase(),
-        created_at: new Date(),
-      });
     }
     
     let relatorio = '';

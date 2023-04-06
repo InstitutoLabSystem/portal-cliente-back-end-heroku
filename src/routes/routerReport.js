@@ -14,6 +14,8 @@ Router.get('/getLogin', controllerReport.getLogin)
 Router.delete('/delete', controllerReport.delete)
 Router.put('/putStatus', controllerReport.updateStatus)
 
+Router.post('/createAcesso', controllerReport.createAcesso)
+
 Router.put('/updateStatus', controllerReport.putStatus)
 
 module.exports = Router
