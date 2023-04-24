@@ -45,7 +45,7 @@ app.get('/', function (req, res) {
 })
 
 app.listen(port, () => {
-  console.log('Objeto: ', networkInfo)
+  // console.log('Objeto: ', networkInfo)
   // console.log('IP: ', networkInfo.log[0].address)
   console.log(`Example app listening at http://localhost:${port}`)
 })

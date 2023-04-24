@@ -1,3 +1,5 @@
+require('dotenv').config()
+const AWS = require('aws-sdk')
 const Relatorios = require('../models/Relatorio');
 const Login = require('../models/Login')
 const portalrelatorio = require('./controllerPortalRelatorio');
@@ -155,7 +157,27 @@ const relatorios = {
     }
   },
   async delete(req, res) {
-    if (req.query.id) {
+    if (req.query.id, req.query.key) {
+
+      const key = req.query.key.split('.com/')[1];
+      AWS.config.update({
+        accessKeyId: process.env.ACCESS_KEY_ID,
+        secretAccessKey: process.env.SECRET_ACCESS_KEY,
+        region: process.env.REGION,
+      });
+
+      const s3 = new AWS.S3();
+
+      const params = {
+        Bucket: process.env.BUCKET,
+        Key: key,
+      }
+
+      s3.deleteObject(params, function (err, data) {
+        if (err) console.log(err, err.stack);
+        else console.log(data);
+      })
+
       try {
         Relatorios.destroy({
           where: {
@@ -223,7 +245,6 @@ const relatorios = {
       return res.status(400).json({ msg: 'Error, Não foi possível atualizar o status' });
     }
   },
-
   async putStatus(req, res) {
     if (!req.body.orcamento) {
       return res
