@@ -20,7 +20,7 @@ const upload = multer({
     acl: 'public-read',
     key: function (req, file, cb) {
       // gerando um nome aleatório para o arquivo, pegando a extensão do arquivo
-      cb(null, shortId.generate() + '.' + file.originalname.split('.')[1])
+      cb(null, req.body.orcamento + '-' + shortId.generate() + '.' + file.originalname.split('.')[1])
     },
   }),
   fileFilter: (req, file, cb) => {
