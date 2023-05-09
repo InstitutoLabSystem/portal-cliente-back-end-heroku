@@ -4,15 +4,11 @@ const Relatorios = require('../models/Relatorio');
 const Login = require('../models/Login')
 const portalrelatorio = require('./controllerPortalRelatorio');
 const EmailsEnviados = require('../models/PortalEmailsEnviados');
-const dataAtual = require('../controllers/date');
-// const emails = require('./controllerEmails')
-// const search = require('./controllersSearch')
 
 const relatorios = {
   async novoRelatorio(req, res) {
     if (
-      !req.file ||
-      !req.body.dateAtual ||
+      // !req.body.dateAtual ||
       !req.body.orcamento ||
       !req.body.responsavel ||
       !req.body.upload_vencimento ||
@@ -26,15 +22,6 @@ const relatorios = {
         .json({ msg: 'Error, Campos vazios não são permitidos!' });
     }
 
-    const dataHora = req.body.dateAtual.split('T');
-    const data = dataHora[0] + 'T';
-    const hora = dataHora[1].split(':')[0] - 3;
-    const minutos = dataHora[1].split(':')[1];
-    const segundo = dataHora[1].split(':')[2];
-    const horario = hora + ':' + minutos + ':' + segundo;
-    const date = data + horario;
-    console.log(date);
-
     try {
       const relatorio = await Relatorios.create({
         orcamento: req.body.orcamento,
@@ -42,12 +29,11 @@ const relatorios = {
         senha: req.body.senha.toUpperCase(),
         descricao_os: req.body.descricao_os,
         laboratorio: req.body.laboratorio,
-        data_criacao: date,
+        data_criacao: new Date(),
         data_vencimento: req.body.upload_vencimento,
         responsavel: req.body.responsavel,
         status: 0,
-        link_relatorio:
-          'https://labsystem.s3.us-east-1.amazonaws.com/' + req.file.key,
+        link_relatorio: req.body.link_relatorio,
       });
 
       var login;
@@ -84,6 +70,7 @@ const relatorios = {
           .json({ msg: 'Ocorreu um erro em salvar no banco' });
       }
     } catch (error) {
+      console.log(error)
       return res
         .status(400)
         .json({ msg: 'Error, não foi possível cadastrar o relatório' });
@@ -259,7 +246,6 @@ const relatorios = {
           orcamento: req.body.orcamento,
         },
       });
-      console.log('relatorio', relatorio)
       if (relatorio) {
         await Relatorios.update(
           { status: 1 },
@@ -274,6 +260,7 @@ const relatorios = {
         await EmailsEnviados.create({
           id_grupo: req.body.groupSelect,
           orcamento: req.body.orcamento,
+          assunto_email: req.body.assunto,
           emailCli: req.body.emailCli ? req.body.emailCli : null,
           emailSol: req.body.emailSol ? req.body.emailSol : null,
           data_envio: new Date(),
@@ -285,7 +272,7 @@ const relatorios = {
         .status(400)
         .json({ msg: 'Error, não foi possivel enviar o email' });
     }
-  },
+  }
 };
 
 module.exports = relatorios;

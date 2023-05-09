@@ -49,11 +49,11 @@ const sendEmail = {
     `;
 
     const texto = `<p style="font-family: sans-serif">Prezado Cliente,<br><br>Seu relatório referênte ao Orçamento: ${orcamento}, está  disponível para download.<br><br>
-        E para melhor atendê-los, a Lab System está implementando em nosso site uma área exclusiva para os nossos clientes, onde todos os relatórios finalizados ficaram disponíveis para baixar por um período de 6 meses.<br>
         Para acessar entre no link abaixo com as seguintes informações:<br><br>
         <strong>Site: </strong>https://labsystem-nuvem.com.br/portal-cliente<br>
         <strong>Orçamento:</strong>${orcamento}<br>
         <strong>Senha: </strong>${senha.toUpperCase()}<br><br>
+        Todos os relatórios finalizados ficaram disponíveis para baixar por um período de 6 meses.<br><br>
         Atenciosamente <br> Laboratório Lab System.<br><br>
         Esse é um e-mail automático, favor não responder! <br> Em caso de dúvidas entre em contato com:<br><br>${table}
         </p>

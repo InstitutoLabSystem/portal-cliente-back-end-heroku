@@ -19,6 +19,11 @@ class PortalEmailsEnviados extends Model {
           allowNull: false,
           autoIncrement: false,
         },
+        assunto_email: {
+          type: DataTypes.STRING(255),
+          allowNull: true,
+          autoIncrement: false,
+        },
         emailCli: {
           type: DataTypes.STRING(100),
           allowNull: true,

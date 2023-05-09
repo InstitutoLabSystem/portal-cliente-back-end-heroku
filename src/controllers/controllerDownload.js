@@ -7,7 +7,6 @@ const downloads = {
     }
     try {
       if (req.query.idPortalAcessos) {
-        console.log('entrou aqui')
         const result = await Downloads.findAll({
           where: {
             orcamento: req.query.orcamento,

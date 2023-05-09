@@ -65,7 +65,6 @@ const groups = {
         id: req.body.id,
         descricao: req.body.descricao,
       }
-      console.log(group)
       return res.json({ msg: 'Grupo Atualizado', group })
     } catch (error) {
       return res.status(400).json({ msg: 'Error, campos vazios' })

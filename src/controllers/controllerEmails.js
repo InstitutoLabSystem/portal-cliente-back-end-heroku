@@ -113,10 +113,12 @@ const emails = {
 
   async createEmailsEnviados(req, res) {
     const data = new Date();
+    console.log('Chegou');
     try {
       await EmailsEnviados.create({
         id_grupo: req.body.groupSelect,
         orcamento: req.body.orcamento,
+        assunto_email: req.body.assunto,
         emailCli: req.body.emailCli,
         emailSol: req.body.emailSol,
         data_envio: data,
