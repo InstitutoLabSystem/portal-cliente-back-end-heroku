@@ -1,4 +1,3 @@
-const { response } = require('express')
 const Observation = require('../models/Observation')
 
 const observations = {
@@ -27,6 +26,18 @@ const observations = {
         } catch(error) {
             res.json({ msg: 'Não foi possivel encontrar nenhuma observação!' })
         }
+    },
+
+    async getOne(req, res) {
+         try {
+            const observation = await Observation.findAll({
+                where : { orcamento: req.query.orcamento},
+            });
+            res.status(200).json(observation)
+         } catch(error) {
+            console.error(error)
+            res.json ({ msg: 'Não foi possivel encontrar nenhuma observação' })
+         }
     },
 
     async update(req, res) {
