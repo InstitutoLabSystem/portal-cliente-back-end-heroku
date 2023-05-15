@@ -31,7 +31,7 @@ const observations = {
 
     async getOne(req, res) {
          try {
-            const observation = await Observation.findOne({
+            const observation = await Observation.findAll({
                 where: { orcamento: req.query.orcamento},
             });
             res.status(200).json(observation)
