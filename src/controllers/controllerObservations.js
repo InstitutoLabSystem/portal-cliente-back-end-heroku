@@ -21,8 +21,9 @@ const observations = {
 
     async get(req, res) {
         try {
-            const observation = await Observation.findAll()
-            res.json(observation)
+            const observation = await Observation.findAll();
+            res.json(observation);
+            console.log(observation);
         } catch(error) {
             res.json({ msg: 'Não foi possivel encontrar nenhuma observação!' })
         }
@@ -30,8 +31,8 @@ const observations = {
 
     async getOne(req, res) {
          try {
-            const observation = await Observation.findAll({
-                where : { orcamento: req.query.orcamento},
+            const observation = await Observation.findOne({
+                where: { orcamento: req.query.orcamento},
             });
             res.status(200).json(observation)
          } catch(error) {
