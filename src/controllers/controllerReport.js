@@ -12,7 +12,7 @@ const relatorios = {
       !req.body.orcamento ||
       !req.body.responsavel ||
       !req.body.upload_vencimento ||
-      !req.body.nome_empresa ||
+      // !req.body.nome_empresa ||
       !req.body.descricao_os ||
       !req.body.token ||
       !req.body.senha
