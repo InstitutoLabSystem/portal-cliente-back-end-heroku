@@ -3,7 +3,7 @@ const Clientes = require('../models/Clientes')
 
 const clientes = {
   async get(req, res) {
-    if (!req.query.codCli) {
+    if (!req.query.cod_cli) {
       return res
         .status(400)
         .json({ msg: 'Error, Não foi recebido o Codigo Cliente' })
@@ -11,7 +11,7 @@ const clientes = {
     try {
       const cliente = await Clientes.findOne({
         attributes: ['RAZCLI'],
-        where: { CODCLI: req.query.codCli },
+        where: { CODCLI: req.query.cod_cli },
       })
       res.json(cliente)
     } catch (error) {
