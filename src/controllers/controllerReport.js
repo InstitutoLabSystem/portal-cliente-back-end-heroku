@@ -145,7 +145,6 @@ const relatorios = {
   },
   async delete(req, res) {
     if (req.query.id, req.query.key) {
-
       const key = req.query.key.split('.com/')[1];
       AWS.config.update({
         accessKeyId: process.env.ACCESS_KEY_ID,
@@ -166,12 +165,11 @@ const relatorios = {
       })
 
       try {
-        Relatorios.destroy({
-          where: {
-            id: req.query.id,
-          },
-        });
-        return res.json({ msg: 'Deletado com sucesso' });
+        await Relatorios.update({ 
+          ativo : 0 },
+          { where :{ id: req.query.id } }
+        );
+        return res.json({ msg: `Deletado com sucesso `});
       } catch (error) {
         return res
           .status(400)
