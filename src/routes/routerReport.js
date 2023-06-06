@@ -10,7 +10,7 @@ Router.post('/uploadFile', upload.any(), controllerUpload.uploadFile)
 Router.get('/get', controllerReport.get)
 Router.get('/getAll', controllerReport.getall)
 Router.get('/getLogin', controllerReport.getLogin)
-Router.put('/delete', controllerReport.delete)
+Router.delete('/delete', controllerReport.delete)
 Router.put('/putStatus', controllerReport.updateStatus)
 
 Router.post('/createAcesso', controllerReport.createAcesso)
