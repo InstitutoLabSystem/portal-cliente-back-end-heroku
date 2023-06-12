@@ -2,8 +2,12 @@ require('dotenv').config()
 const AWS = require('aws-sdk')
 const Relatorios = require('../models/Relatorio');
 const Login = require('../models/Login')
+const Log = require('../models/Log')
 const portalrelatorio = require('./controllerPortalRelatorio');
 const EmailsEnviados = require('../models/PortalEmailsEnviados');
+const { create } = require('./controllerLog');
+const { createDelete } = require('./controllerLog');
+
 
 const relatorios = {
   async novoRelatorio(req, res) {
@@ -44,7 +48,7 @@ const relatorios = {
       } catch (error) {
         console.log(error)
       }
-      
+
       if (login.length === 0) {
         await Login.create({
           token: req.body.token,
@@ -59,8 +63,12 @@ const relatorios = {
         req.body.responsavel,
         relatorio.id
       );
-
       if (sucesso) {
+        await create(
+          req.body.orcamento,
+          relatorio.data_criacao,
+          req.body.responsavel
+        );
         return res
           .status(201)
           .json({ msg: 'Sucesso, Relatório gravado', relatorio });
@@ -166,7 +174,24 @@ const relatorios = {
       })
 
       try {
-        Relatorios.destroy({
+
+        const relatorio = await Relatorios.findOne({
+          where: {
+            id: req.query.id,
+          },
+        });
+
+        if (!relatorio) {
+          return res.status(404).json({ msg: 'Relatório não encontrado' });
+        }
+        
+        await createDelete(
+          relatorio.orcamento,
+          relatorio.data_criacao,
+          relatorio.responsavel
+        );
+
+        await Relatorios.destroy({
           where: {
             id: req.query.id,
           },
@@ -197,7 +222,7 @@ const relatorios = {
       res.status(400).json({ msg: 'Error, Não foi possível criar o acesso' });
       console.log(error)
     }
-    
+
     if (login) {
       return res
         .status(400)
@@ -224,7 +249,7 @@ const relatorios = {
       await Relatorios.update({
         status: 1,
       }, {
-        where: {id: req.body.id}
+        where: { id: req.body.id }
       })
       return res.status(200).json({ msg: 'Sucesso, Status atualizado' });
     } catch (error) {
@@ -238,7 +263,7 @@ const relatorios = {
         .status(400)
         .json({ msg: 'Error, Campos vazios não são permitidos!' });
     }
-    
+
     let relatorio = '';
     try {
       relatorio = await Relatorios.findOne({

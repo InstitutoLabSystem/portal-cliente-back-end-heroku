@@ -20,6 +20,7 @@ const routerUsers = require('./src/routes/routerUsers')
 const routerGroup = require('./src/routes/routerGroup')
 const routerEmailCopia = require('./src/routes/routerEmailCopia')
 const routerObservations = require('./src/routes/routerObservations')
+const routerLog = require('./src/routes/routerLog')
 const app = express()
 
 app.use('/report', cors(config.cors), express.json(), routerReport)
@@ -32,6 +33,7 @@ app.use('/users', cors(config.cors), express.json(), routerUsers)
 app.use('/group', cors(config.cors), express.json(), routerGroup)
 app.use('/emailCopia', cors(config.cors), express.json(), routerEmailCopia)
 app.use('/observation', cors(config.cors), express.json(), routerObservations)
+app.use('/log', cors(config.cors), express.json(), routerLog)
 
 app.get('/', function (req, res) {
   testeConnection
