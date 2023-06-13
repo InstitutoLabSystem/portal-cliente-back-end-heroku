@@ -38,11 +38,25 @@ const log = {
             const logs = await Log.findAll();
             const reverseLogs = logs.reverse();
             res.json(reverseLogs);
-            console.log(reverseLogs);
         } catch (error) {
             res.json({ msg: 'Não foi encontrado Log' })
         }
-    }
+    },
+
+    async getOne(req, res) {
+        try {
+            const logs = await Log.findAll({
+                where: { orcamento: req.query.orcamento },
+            });
+            if (logs) {
+                const reverseLogs = logs.reverse();
+                res.status(200).json(reverseLogs);
+            }
+        } catch (error) {
+            console.log(error)
+            res.status(400).json({ error: 'Erro ao buscar orçamento' })
+        }
+    },
 }
 
 module.exports = log

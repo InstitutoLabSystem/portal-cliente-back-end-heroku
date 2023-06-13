@@ -5,6 +5,7 @@ const controllerLog = require('../controllers/controllerLog')
 Router.post('/', controllerLog.create);
 Router.post('/', controllerLog.createDelete);
 Router.get('/', controllerLog.get);
+Router.get('/one', controllerLog.getOne);
 
 
 
