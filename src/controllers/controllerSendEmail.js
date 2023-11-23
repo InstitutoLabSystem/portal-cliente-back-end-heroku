@@ -31,18 +31,28 @@ const sendEmail = {
             <td>qualidade1@labsystem.com.br</td>
             </tr>
             <tr>
-            <td>Karine Galdino</td>
+            <td>Joyce Moreira</td>
             <td>Qualidade</td>
             <td>qualidade6@labsystem.com.br</td>
             </tr>
             <tr>
             <td>Stephany Mendes</td>
             <td>Qualidade</td>
+            <td>qualidade2@labsystem.com.br</td>
+            </tr>
+            <tr>
+            <td>Michel Silva</td>
+            <td>PCP</td>
+            <td>pcp@labsystem.com.br</td>
+            </tr>
+            <tr>
+            <td>Lucas Silva</td>
+            <td>PCP</td>
             <td>tecnico3@labsystem.com.br</td>
             </tr>
             <tr>
-            <td>Joyce Moreira</td>
-            <td>Qualidade</td>
+            <td>Ana Soares</td>
+            <td>PCP</td>
             <td>tecnico1@labsystem.com.br</td>
             </tr>
         </table>
