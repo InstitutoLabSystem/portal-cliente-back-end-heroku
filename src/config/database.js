@@ -1,8 +1,8 @@
 module.exports = {
   dialect: 'mysql',
   host: 'novolab.c82dqw5tullb.sa-east-1.rds.amazonaws.com',
-  username: 'sistema',
-  password: '7847awse',
+  username: 'Sistemas',
+  password: '#7847awsE2024',
   database: 'labdados',
   port: 3306,
   define: {
