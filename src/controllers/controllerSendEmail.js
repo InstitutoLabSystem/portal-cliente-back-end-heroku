@@ -70,22 +70,22 @@ const sendEmail = {
         `;
 
     const transporter = nodemailer.createTransport({
-      host: 'mail.institutolabsystem.com.br',
+      host: 'cloud109.mailgrid.net.br',
       port: '465',
       secure: true,
-      requireTLS: false,
+      requireTLS: true,
       debug: true,
       // auth: { user: "relatorioslabsystem@chat.labsystem-nuvem.com.br", pass: "Relatorio@2022" }
       auth: {
-        user: 'relatorios@institutolabsystem.com.br',
-        pass: 'PaRHOOibupWm',
+        user: 'labsystem@labsystem.com.br',
+        pass: 'pBIF1iimmt',
       },
     });
 
     try {
       await transporter.sendMail({
         // from: "relatorioslabsystem@chat.labsystem-nuvem.com.br",
-        from: 'relatorios@institutolabsystem.com.br',
+        from: 'relatorios@labsystem.com.br',
         to: emails,
         // to: 'victorbrunof@icloud.com, mmuramota1@gmail.com',
         cc: emailCopia,
