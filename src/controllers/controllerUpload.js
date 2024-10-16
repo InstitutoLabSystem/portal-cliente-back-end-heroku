@@ -45,6 +45,7 @@ const uploads = {
         } catch (error) {
             console.log(error)
             res.status(400).json({msg: 'Erro ao realizar upload!'})
+            
         }
     }
 }
