@@ -41,7 +41,7 @@ const sendEmail = {
             <td>qualidade2@labsystem.com.br</td>
             </tr>
             <tr>
-            <td>Michel Silva</td>
+            <td>Anderson Hernandes</td>
             <td>PCP</td>
             <td>pcp@labsystem.com.br</td>
             </tr>
