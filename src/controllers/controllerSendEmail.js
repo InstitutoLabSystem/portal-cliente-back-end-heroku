@@ -55,6 +55,11 @@ const sendEmail = {
             <td>PCP</td>
             <td>tecnico1@labsystem.com.br</td>
             </tr>
+            <tr>
+            <td>Paloma Carvalho</td>
+            <td>PCP</td>
+            <td>tecnico@labsystem.com.br</td>
+            </tr>
         </table>
     `;
 
