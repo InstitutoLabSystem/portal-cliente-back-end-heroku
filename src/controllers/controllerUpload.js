@@ -23,7 +23,8 @@ const uploads = {
 
                 // Envia para o webhook
                 const response = await axios.post(
-                    'https://webhook.vps.labsystem-nuvem.com.br/webhook/portal',
+                    'https://n8n-labsystem-u40703.vm.elestio.app/webhook/portal',
+                    // 'https://webhook.vps.labsystem-nuvem.com.br/webhook/portal',
                     form,
                     {
                         headers: form.getHeaders(),
