@@ -28,7 +28,10 @@ const uploads = {
                     // 'https://n8n.vps.labsystem-nuvem.com.br/webhook-test/portal',
 
                     // Whebhook de Adalink
-                    'https://n8n-labsystem-u40703.vm.elestio.app/webhook/portal',
+                    // 'https://n8n-labsystem-u40703.vm.elestio.app/webhook/portal',
+
+                    // webhook de Teste Local
+                    'https://devlabsystem.app.n8n.cloud/webhook/portal',
 
                     form,
                     {
