@@ -32,7 +32,7 @@ const uploads = {
                     // webhook de Teste Local
                     // 'https://devlabsystem.app.n8n.cloud/webhook/portal',
 
-                    'https://labsystem-nuvem.app.n8n.cloud/webhook/fe7e0737-0c80-4cea-adf6-40140fd277ba',
+                    'https://nuvem-labsystem.app.n8n.cloud/webhook/fe7e0737-0c80-4cea-adf6-40140fd277ba',
 
                     form,
                     {
