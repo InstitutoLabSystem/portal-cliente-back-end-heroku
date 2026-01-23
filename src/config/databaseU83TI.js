@@ -1,10 +1,9 @@
 module.exports = {
   dialect: 'mysql',
-  // host: 'sql536.main-hosting.eu',
-  host: 'srv951.hstgr.io',
-  username: 'u838556479_ti',
-  password: '@7847%Twty',
-  database: 'u838556479_ti',
+  host: 'novolab.c82dqw5tullb.sa-east-1.rds.amazonaws.com',
+  username: 'Sistemas',
+  password: '#7847awsE2024',
+  database: 'portalrelatorio',
   port: 3306,
   define: {
     timestamps: false,
