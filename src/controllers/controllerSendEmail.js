@@ -28,37 +28,41 @@ const sendEmail = {
             <tr>
             <td>Sanderson Prado</td>
             <td>Qualidade</td>
-            <td>qualidade1@labsystem.com.br</td>
+            <td>sanderson.prado@bureauveritas.com</td>
             </tr>
             <tr>
             <td>Joyce Moreira</td>
             <td>Qualidade</td>
-            <td>qualidade6@labsystem.com.br</td>
+            <td>joyce.farias@bureauveritas.com</td>
             </tr>
             <tr>
             <td>Stephany Mendes</td>
             <td>Qualidade</td>
-            <td>qualidade2@labsystem.com.br</td>
+            <td>stephanymendesda.silva@bureauveritas.com</td>
             </tr>
             <tr>
             <td>Anderson Hernandes</td>
             <td>PCP</td>
             <td>pcp@labsystem.com.br</td>
+            <td>anderson.hernandes@bureauveritas.com</td>
             </tr>
             <tr>
             <td>Lucas Silva</td>
             <td>PCP</td>
             <td>tecnico3@labsystem.com.br</td>
+            <td>lucas.rodrigues2@bureauveritas.com</td>
             </tr>
             <tr>
             <td>Ana Soares</td>
             <td>PCP</td>
             <td>tecnico1@labsystem.com.br</td>
+            <td>anapaula.silva@bureauveritas.com</td>
             </tr>
             <tr>
             <td>Dilma Meneses</td>
             <td>PCP</td>
             <td>tecnico@labsystem.com.br</td>
+            <td>dilmademeneses.silva@bureauveritas.com</td>
             </tr>
         </table>
     `;
