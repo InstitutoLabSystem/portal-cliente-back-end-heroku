@@ -43,25 +43,21 @@ const sendEmail = {
             <tr>
             <td>Anderson Hernandes</td>
             <td>PCP</td>
-            <td>pcp@labsystem.com.br</td>
             <td>anderson.hernandes@bureauveritas.com</td>
             </tr>
             <tr>
             <td>Lucas Silva</td>
             <td>PCP</td>
-            <td>tecnico3@labsystem.com.br</td>
             <td>lucas.rodrigues2@bureauveritas.com</td>
             </tr>
             <tr>
             <td>Ana Soares</td>
             <td>PCP</td>
-            <td>tecnico1@labsystem.com.br</td>
             <td>anapaula.silva@bureauveritas.com</td>
             </tr>
             <tr>
             <td>Dilma Meneses</td>
             <td>PCP</td>
-            <td>tecnico@labsystem.com.br</td>
             <td>dilmademeneses.silva@bureauveritas.com</td>
             </tr>
         </table>
@@ -79,24 +75,21 @@ const sendEmail = {
         `;
 
     const transporter = nodemailer.createTransport({
-      host: 'cloud109.mailgrid.net.br',
-      port: '465',
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
       secure: true,
       requireTLS: true,
       debug: true,
-      // auth: { user: "relatorioslabsystem@chat.labsystem-nuvem.com.br", pass: "Relatorio@2022" }
       auth: {
-        user: 'labsystem@labsystem.com.br',
-        pass: 'pBIF1iimmt',
+        user:  process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
       },
     });
 
     try {
       await transporter.sendMail({
-        // from: "relatorioslabsystem@chat.labsystem-nuvem.com.br",
         from: 'relatorios@labsystem.com.br',
         to: emails,
-        // to: 'victorbrunof@icloud.com, mmuramota1@gmail.com',
         cc: emailCopia,
         subject: `${assunto}`,
         html: texto,
