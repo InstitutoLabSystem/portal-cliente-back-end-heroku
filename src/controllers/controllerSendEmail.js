@@ -60,19 +60,50 @@ const sendEmail = {
             <td>PCP</td>
             <td>dilmademeneses.silva@bureauveritas.com</td>
             </tr>
+            <td>Darios Silva</td>
+            <td>PCP</td>
+            <td>dario.silva@bureauveritas.com</td>
+            </tr>
+            <td>Vitor Nogueira Navas</td>
+            <td>PCP</td>
+            <td>vitor.navas@bureauveritas.com</td>
+            </tr>
         </table>
     `;
 
-    const texto = `<p style="font-family: sans-serif">Prezado Cliente,<br><br>Seu relatório referênte ao Orçamento: ${orcamento}, está  disponível para download.<br><br>
-        Para acessar entre no link abaixo com as seguintes informações:<br><br>
-        <strong>Site: </strong>https://labsystem-nuvem.com.br/portal-cliente<br>
-        <strong>Orçamento:</strong>${orcamento}<br>
-        <strong>Senha: </strong>${senha.toUpperCase()}<br><br>
-        Todos os relatórios finalizados ficaram disponíveis para baixar por um período de 6 meses.<br><br>
-        Atenciosamente <br> Laboratório Lab System.<br><br>
-        Esse é um e-mail automático, favor não responder! <br> Em caso de dúvidas entre em contato com:<br><br>${table}
-        </p>
-        `;
+    const texto = `<p style="font-family: sans-serif">
+      Prezado Cliente,<br><br>
+
+      Seu relatório referente ao Orçamento: ${orcamento}, está disponível para download.<br><br>
+
+      Para acessar entre no link abaixo com as seguintes informações:<br><br>
+
+      <strong>Site: </strong>https://labsystem-nuvem.com.br/portal-cliente<br>
+      <strong>Orçamento:</strong> ${orcamento}<br>
+      <strong>Senha: </strong>${senha.toUpperCase()}<br><br>
+
+      Todos os relatórios finalizados ficaram disponíveis para baixar por um período de 6 meses.<br><br>
+
+      <hr>
+
+      Informamos que as sobras das amostras de teste estão disponíveis para retirada.<br><br>
+
+      Favor entrar em contato através dos e-mails: 
+      dario.silva@bureauveritas.com; vitor.navas@bureauveritas.com para agendar a coleta.<br><br>
+
+      As sobras das amostras serão mantidas armazenadas por um período de 10 dias a partir deste comunicado, 
+      após esse período as amostras serão destinadas para descarte.<br><br>
+
+      <em>*Caso não tenha selecionado a opção de retirada das sobras, por gentileza desconsiderar.</em><br><br>
+
+      Atenciosamente,<br>
+      Laboratório Lab System - A Bureau Veritas company.<br><br>
+
+      Esse é um e-mail automático, favor não responder!<br>
+      Em caso de dúvidas entre em contato com:<br><br>
+
+      ${table}
+      </p>`;
 
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
@@ -81,7 +112,7 @@ const sendEmail = {
       requireTLS: true,
       debug: true,
       auth: {
-        user:  process.env.EMAIL_USER,
+        user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     });
