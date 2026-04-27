@@ -1,12 +1,9 @@
 const express = require('express')
 const Router = express.Router()
-const multer = require('multer');
-const upload = multer();
 const controllerReport = require('../controllers/controllerReport')
-const controllerUpload = require('../controllers/controllerUpload')
 
-Router.post('/new', controllerReport.novoRelatorio,)
-Router.post('/uploadFile', upload.any(), controllerUpload.uploadFile)
+Router.post('/uploadFile', controllerReport.uploadMiddleware.single('arquivo'), controllerReport.uploadFile)
+Router.post('/new', controllerReport.novoRelatorio)
 Router.get('/get', controllerReport.get)
 Router.get('/getAll', controllerReport.getall)
 Router.get('/getLogin', controllerReport.getLogin)
