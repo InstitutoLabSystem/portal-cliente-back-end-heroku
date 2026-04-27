@@ -61,11 +61,11 @@ const sendEmail = {
             <td>dilmademeneses.silva@bureauveritas.com</td>
             </tr>
             <td>Darios Silva</td>
-            <td>PCP</td>
+            <td>Expedição</td>
             <td>dario.silva@bureauveritas.com</td>
             </tr>
             <td>Vitor Nogueira Navas</td>
-            <td>PCP</td>
+            <td>Expedição</td>
             <td>vitor.navas@bureauveritas.com</td>
             </tr>
         </table>
