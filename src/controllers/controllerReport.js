@@ -11,9 +11,9 @@ const { create, createDelete } = require('./controllerLog');
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 AWS.config.update({
-  accessKeyId: process.env.ACCESS_KEY_ID,
-  secretAccessKey: process.env.SECRET_ACCESS_KEY,
-  region: process.env.REGION,
+  accessKeyId: 'AKIA2HI7MLPQG5WOHEFJ',
+  secretAccessKey: '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',
+  region: 'us-east-1',
 });
 const s3 = new AWS.S3();
 
@@ -27,16 +27,6 @@ const uploadMiddleware = multer({
 const relatorios = {
   uploadMiddleware,
 
-  /**
-   * POST /relatorio/upload
-   *
-   * Body (multipart/form-data):
-   *   arquivo   – arquivo a enviar
-   *   orcamento – número do orçamento (usado como prefixo da chave no S3)
-   *
-   * Retorna:
-   *   { msg, url, key } em caso de sucesso
-   */
   async uploadFile(req, res) {
     if (!req.file) {
       return res.status(400).json({ msg: 'Nenhum arquivo enviado.' });
@@ -50,7 +40,7 @@ const relatorios = {
     const key = `reports-clients/${req.body.orcamento}/${timestamp}_${sanitizedName}`;
 
     const params = {
-      Bucket: process.env.BUCKET,
+      Bucket: 'aws-labsphere-s3',
       Key: key,
       Body: req.file.buffer,
       ContentType: req.file.mimetype,
