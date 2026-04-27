@@ -65,7 +65,7 @@ const relatorios = {
       });
     } catch (error) {
       console.error('Erro no upload S3:', error);
-      return res.status(500).json({ msg: 'Não foi possível realizar o upload.' });
+      return res.status(500).json({ msg: 'Não foi possível realizar o upload.', debug: error.message, code: error.code });
     }
   },
 
