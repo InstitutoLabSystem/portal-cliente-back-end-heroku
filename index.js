@@ -36,7 +36,7 @@ app.use('/observation', cors(config.cors), express.json(), routerObservations)
 app.use('/log', cors(config.cors), express.json(), routerLog)
 
 app.get('/', function (req, res) {
-  testeConnection
+  testeConnection.connectionportalrelatorio
     .authenticate()
     .then(() => {
       console.log('Conectado com sucesso')

@@ -106,14 +106,16 @@ const sendEmail = {
       </p>`;
 
     const transporter = nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
+      host: 'mail.labsystem.com.br',
+      port: 465,
       secure: true,
-      requireTLS: true,
       debug: true,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
+        user: 'relatorios@labsystem.com.br',
+        pass: 'pBIF1iimmt',
+      },
+      tls: {
+        rejectUnauthorized: false,
       },
     });
 
