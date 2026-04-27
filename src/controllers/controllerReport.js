@@ -1,22 +1,81 @@
 require('dotenv').config()
 const AWS = require('aws-sdk')
+const multer = require('multer')
 const Relatorios = require('../models/Relatorio');
 const Login = require('../models/Login')
 const Log = require('../models/Log')
 const portalrelatorio = require('./controllerPortalRelatorio');
 const EmailsEnviados = require('../models/PortalEmailsEnviados');
-const { create } = require('./controllerLog');
-const { createDelete } = require('./controllerLog');
+const { create, createDelete } = require('./controllerLog');
 
+// ─── Helpers ────────────────────────────────────────────────────────────────
+
+AWS.config.update({
+  accessKeyId: process.env.ACCESS_KEY_ID,
+  secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  region: process.env.REGION,
+});
+const s3 = new AWS.S3();
+
+const uploadMiddleware = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+});
+
+// ─── Controller ─────────────────────────────────────────────────────────────
 
 const relatorios = {
+  uploadMiddleware,
+
+  /**
+   * POST /relatorio/upload
+   *
+   * Body (multipart/form-data):
+   *   arquivo   – arquivo a enviar
+   *   orcamento – número do orçamento (usado como prefixo da chave no S3)
+   *
+   * Retorna:
+   *   { msg, url, key } em caso de sucesso
+   */
+  async uploadFile(req, res) {
+    if (!req.file) {
+      return res.status(400).json({ msg: 'Nenhum arquivo enviado.' });
+    }
+    if (!req.body.orcamento) {
+      return res.status(400).json({ msg: 'O campo orcamento é obrigatório.' });
+    }
+
+    const timestamp = Date.now();
+    const sanitizedName = req.file.originalname.replace(/\s+/g, '_');
+    const key = `reports-clients/${req.body.orcamento}/${timestamp}_${sanitizedName}`;
+
+    const params = {
+      Bucket: process.env.BUCKET,
+      Key: key,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+      // Remova a linha abaixo se preferir controle de acesso via signed URLs
+      ACL: 'public-read',
+    };
+
+    try {
+      const data = await s3.upload(params).promise();
+      return res.status(201).json({
+        msg: 'Upload realizado com sucesso.',
+        url: data.Location,  // URL pública do arquivo
+        key: data.Key,       // Chave para usar em futuras operações (ex: delete)
+      });
+    } catch (error) {
+      console.error('Erro no upload S3:', error);
+      return res.status(500).json({ msg: 'Não foi possível realizar o upload.' });
+    }
+  },
+
   async novoRelatorio(req, res) {
     if (
-      // !req.body.dateAtual ||
       !req.body.orcamento ||
       !req.body.responsavel ||
       !req.body.upload_vencimento ||
-      // !req.body.nome_empresa ||
       !req.body.descricao_os ||
       !req.body.token ||
       !req.body.senha
@@ -40,16 +99,11 @@ const relatorios = {
         link_relatorio: req.body.link_relatorio,
       });
 
-      var login;
-      try {
-        login = await Login.findAll({
-          where: { orcamento: req.body.orcamento, senha: req.body.senha },
-        });
-      } catch (error) {
-        console.log(error)
-      }
+      const loginExistente = await Login.findAll({
+        where: { orcamento: req.body.orcamento, senha: req.body.senha },
+      });
 
-      if (login.length === 0) {
+      if (loginExistente.length === 0) {
         await Login.create({
           token: req.body.token,
           orcamento: req.body.orcamento,
@@ -152,58 +206,33 @@ const relatorios = {
     }
   },
   async delete(req, res) {
-    if (req.query.id, req.query.key) {
+    if (!req.query.id || !req.query.key) {
+      return res.status(400).json({ msg: 'Nenhum id foi passado' });
+    }
 
-      const key = req.query.key.split('.com/')[1];
-      AWS.config.update({
-        accessKeyId: process.env.ACCESS_KEY_ID,
-        secretAccessKey: process.env.SECRET_ACCESS_KEY,
-        region: process.env.REGION,
+    try {
+      const relatorio = await Relatorios.findOne({
+        where: { id: req.query.id },
       });
 
-      const s3 = new AWS.S3();
-
-      const params = {
-        Bucket: process.env.BUCKET,
-        Key: key,
+      if (!relatorio) {
+        return res.status(404).json({ msg: 'Relatório não encontrado' });
       }
 
-      s3.deleteObject(params, function (err, data) {
-        if (err) console.log(err, err.stack);
-        else console.log(data);
-      })
+      const key = req.query.key.split('.com/')[1];
+      await s3.deleteObject({ Bucket: process.env.BUCKET, Key: key }).promise();
 
-      try {
+      await createDelete(
+        relatorio.orcamento,
+        relatorio.data_criacao,
+        relatorio.responsavel
+      );
 
-        const relatorio = await Relatorios.findOne({
-          where: {
-            id: req.query.id,
-          },
-        });
-
-        if (!relatorio) {
-          return res.status(404).json({ msg: 'Relatório não encontrado' });
-        }
-        
-        await createDelete(
-          relatorio.orcamento,
-          relatorio.data_criacao,
-          relatorio.responsavel
-        );
-
-        await Relatorios.destroy({
-          where: {
-            id: req.query.id,
-          },
-        });
-        return res.json({ msg: 'Deletado com sucesso' });
-      } catch (error) {
-        return res
-          .status(400)
-          .json({ msg: 'Não foi possível deletar o id especificado' });
-      }
-    } else {
-      res.json({ msg: 'Nenhum id foi passado' });
+      await Relatorios.destroy({ where: { id: req.query.id } });
+      return res.json({ msg: 'Deletado com sucesso' });
+    } catch (error) {
+      console.error('Erro ao deletar relatório:', error);
+      return res.status(500).json({ msg: 'Não foi possível deletar o id especificado' });
     }
   },
   async createAcesso(req, res) {
@@ -213,14 +242,14 @@ const relatorios = {
         .json({ msg: 'Error, Campos vazios não são permitidos!' });
     }
 
-    var login;
+    let login;
     try {
       login = await Login.findOne({
         where: { orcamento: req.body.orcamento, senha: req.body.senha },
       });
     } catch (error) {
-      res.status(400).json({ msg: 'Error, Não foi possível criar o acesso' });
-      console.log(error)
+      console.error(error);
+      return res.status(500).json({ msg: 'Error, Não foi possível criar o acesso' });
     }
 
     if (login) {
@@ -278,10 +307,6 @@ const relatorios = {
             where: { orcamento: req.body.orcamento },
           }
         );
-        // relatorio = {
-        //   orcamento: req.body.orcamento,
-        //   status: 1,
-        // };
         await EmailsEnviados.create({
           id_grupo: req.body.groupSelect,
           orcamento: req.body.orcamento,
