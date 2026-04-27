@@ -54,16 +54,14 @@ const relatorios = {
       Key: key,
       Body: req.file.buffer,
       ContentType: req.file.mimetype,
-      // Remova a linha abaixo se preferir controle de acesso via signed URLs
-      ACL: 'public-read',
     };
 
     try {
       const data = await s3.upload(params).promise();
       return res.status(201).json({
         msg: 'Upload realizado com sucesso.',
-        url: data.Location,  // URL pública do arquivo
-        key: data.Key,       // Chave para usar em futuras operações (ex: delete)
+        url: data.Location,
+        key: data.Key,
       });
     } catch (error) {
       console.error('Erro no upload S3:', error);
