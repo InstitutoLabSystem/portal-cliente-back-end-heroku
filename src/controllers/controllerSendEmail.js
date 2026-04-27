@@ -106,16 +106,14 @@ const sendEmail = {
       </p>`;
 
     const transporter = nodemailer.createTransport({
-      host: 'mail.labsystem.com.br',
-      port: 465,
+      host: 'cloud109.mailgrid.net.br',
+      port: '465',
       secure: true,
+      requireTLS: true,
       debug: true,
       auth: {
-        user: 'relatorios@labsystem.com.br',
+        user: 'labsystem@labsystem.com.br',
         pass: 'pBIF1iimmt',
-      },
-      tls: {
-        rejectUnauthorized: false,
       },
     });
 
